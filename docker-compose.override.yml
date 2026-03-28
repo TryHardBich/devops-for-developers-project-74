@@ -1,12 +1,11 @@
+version: '3.8'
+
 services:
   app:
     command: ["make", "dev"]
-    ports:
-      - "8080:8080"
     volumes:
       - ./app:/app
-    environment:
-      - NODE_ENV=development
+      - /app/node_modules
 
   caddy:
     image: caddy:2
@@ -16,4 +15,5 @@ services:
     volumes:
       - ./services/caddy/Caddyfile:/etc/caddy/Caddyfile
     depends_on:
-      - app
+      app:
+        condition: service_started
